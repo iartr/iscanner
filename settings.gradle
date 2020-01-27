@@ -1,2 +1,2 @@
-include ':app', ':barcodescanner'
-rootProject.name='BarcodeScanner'
+include ':app', ':iscanner'
+rootProject.name='iScanner'
