@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ScannerOverlay">
+        <attr name="squareWidth" format="integer" />
+        <attr name="squareHeight" format="integer" />
+        <attr name="squareTopMargin" format="integer" />
+        <attr name="cornersSize" format="integer" />
+        <attr name="cornersWidth" format="integer" />
+        <attr name="cornersColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="ScannableCamera">
+        <attr name="delayMillis" format="integer" />
+        <attr name="isActiveDelay" format="boolean"/>
+    </declare-styleable>
+</resources>

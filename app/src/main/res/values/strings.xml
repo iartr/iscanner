@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">BarcodeScanner</string>
+
+    <string name="hello_text">Демонстрационное приложение для демонстрации работы библиотеки для сканирования QR и штрих-кодво</string>
+    <string name="demonstrate_button_text">Demonstrate</string>
+    <string name="result">Scanning result:</string>
+</resources>
