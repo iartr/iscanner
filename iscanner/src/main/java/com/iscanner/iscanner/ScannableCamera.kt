@@ -11,42 +11,52 @@ import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
 
+/**
+ * Main view for scanning QR codes and barcodes
+ * Just override it and onScanned callback
+ */
 class ScannableCamera @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleArr: Int = 0
 ) : SurfaceView(context, attrs, defStyleArr) {
 
-    private var onScannedCallback: ((List<Barcode>) -> Unit)? = null
+    private lateinit var onScannedCallback: ((List<Barcode>) -> Unit)
 
-    private var delayHandler: Handler? = Handler()
-    private var delayCallback = { isActiveScanner = true }
+    private var delayHandler: Handler?
+    private var delayCallback: (() -> Unit)
     var delay: Long
     var isActiveDelay: Boolean
 
-    private var detector = BarcodeDetector.Builder(context)
-        .setBarcodeFormats(Barcode.ALL_FORMATS)
-        .build()
+    private var detector: BarcodeDetector
+    private var cameraSource: CameraSource
+    private var surfaceHolderCallback: SurfaceHolderCallback
 
-    private lateinit var cameraSource: CameraSource
-
-    private lateinit var shCallback: SurfaceHolderCallback
-
-    var isActiveScanner = true
+    var isActiveScanner: Boolean
 
     init {
-        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.ScannableCamera)
-        delay = typedArray.getInt(R.styleable.ScannableCamera_delayMillis, 1500).toLong()
-        isActiveDelay = typedArray.getBoolean(R.styleable.ScannableCamera_isActiveDelay, true)
+        delayHandler = Handler()
+        delayCallback = { isActiveScanner = true }
+        with(context.obtainStyledAttributes(attrs, R.styleable.ScannableCamera)) {
+            delay = getInt(R.styleable.ScannableCamera_delayMillis, 1500).toLong()
+            isActiveDelay = getBoolean(R.styleable.ScannableCamera_isActiveDelay, true)
+            recycle()
+        }
 
-        typedArray.recycle()
+        detector = BarcodeDetector.Builder(context)
+            .setBarcodeFormats(Barcode.ALL_FORMATS)
+            .build()
+        cameraSource = CameraSource.Builder(context, detector)
+            .setAutoFocusEnabled(true)
+            .build()
+        surfaceHolderCallback = SurfaceHolderCallback(cameraSource)
+        holder.addCallback(surfaceHolderCallback)
+
+        isActiveScanner = true
     }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        delayHandler = Handler()
-        isActiveScanner = true
-
         detector.setProcessor(object : Detector.Processor<Barcode> {
             override fun release() {
             }
@@ -62,16 +72,33 @@ class ScannableCamera @JvmOverloads constructor(
                     delayHandler?.postDelayed(delayCallback, delay)
                 }
 
-                onScannedCallback?.invoke(detections.toList())
+                if (::onScannedCallback.isInitialized) {
+                    onScannedCallback(detections.toList())
+                }
             }
         })
+    }
 
-        cameraSource = CameraSource.Builder(context, detector)
-            .setAutoFocusEnabled(true)
-            .build()
+    override fun onDetachedFromWindow() {
+        holder.removeCallback(surfaceHolderCallback)
+        delayHandler = null // for avoid memory leaks
+        cameraSource.stop()
+        cameraSource.release()
+        super.onDetachedFromWindow()
+    }
 
-        shCallback = SurfaceHolderCallback(cameraSource)
-        holder.addCallback(shCallback)
+    private class SurfaceHolderCallback(private val source: CameraSource) : SurfaceHolder.Callback {
+        override fun surfaceCreated(holder: SurfaceHolder?) {
+            source.start(holder)
+        }
+
+        override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {
+
+        }
+
+        override fun surfaceDestroyed(holder: SurfaceHolder?) {
+            source.stop()
+        }
     }
 
     fun stopScanning() {
@@ -84,29 +111,7 @@ class ScannableCamera @JvmOverloads constructor(
         delayHandler = Handler()
     }
 
-    fun onScanned(onScanned: ((List<Barcode>) -> Unit)? = null) {
+    fun onScanned(onScanned: ((List<Barcode>) -> Unit)) {
         this.onScannedCallback = onScanned
-    }
-
-    override fun onDetachedFromWindow() {
-        holder.removeCallback(shCallback)
-        delayHandler = null
-        cameraSource.stop()
-        cameraSource.release()
-        super.onDetachedFromWindow()
-    }
-}
-
-class SurfaceHolderCallback(private val source: CameraSource) : SurfaceHolder.Callback {
-    override fun surfaceCreated(holder: SurfaceHolder?) {
-        source.start(holder)
-    }
-
-    override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {
-
-    }
-
-    override fun surfaceDestroyed(holder: SurfaceHolder?) {
-        source.stop()
     }
 }
