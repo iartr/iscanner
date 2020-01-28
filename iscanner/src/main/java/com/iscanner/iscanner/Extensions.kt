@@ -29,6 +29,7 @@ fun List<Barcode>.hasBarcodeType(type: Int): Boolean {
     return false
 }
 
+// For VK QR codes it is EAN_13
 fun Barcode.isQr(): Boolean {
     return this.format == Barcode.QR_CODE
 }
