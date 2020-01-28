@@ -17,9 +17,13 @@ class ScannerOverlay @JvmOverloads constructor(
     private var bottomCoordinate: Float = 0f
 
     private val cornerPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-    private val eraser = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val eraser = Paint(Paint.ANTI_ALIAS_FLAG).apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR) }
     private val transparentRect = RectF()
 
+    /**
+     * Changeable view fields
+     * Measure unit: dp
+     */
     var topMargin: Int
     var cornerSize: Int
     var cornerWidth: Int
@@ -38,7 +42,8 @@ class ScannerOverlay @JvmOverloads constructor(
         cornerSize = typedArray.getInteger(
             R.styleable.ScannerOverlay_cornersSize,
             resources.getInteger(R.integer.scanner_corner_size)
-        )
+        ).dpToPx()
+
         cornerWidth = typedArray.getInteger(
             R.styleable.ScannerOverlay_cornersWidth,
             resources.getInteger(R.integer.scanner_corner_width)
@@ -59,8 +64,6 @@ class ScannerOverlay @JvmOverloads constructor(
         cornerPaint.style = Paint.Style.STROKE
         cornerPaint.strokeWidth = cornerWidth.dpToPx().toFloat()
         cornerPaint.color = cornerColor
-
-        eraser.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
 
         typedArray.recycle()
     }
@@ -89,13 +92,12 @@ class ScannerOverlay @JvmOverloads constructor(
     }
 
     private fun drawCorners(canvas: Canvas) {
-        val size = cornerSize.dpToPx()
         val offset = cornerPaint.strokeWidth
         val halfOffset = offset / 2
         canvas.drawLine(
             leftCoordinate - offset,
             topCoordinate - halfOffset,
-            leftCoordinate - offset + size,
+            leftCoordinate - offset + cornerSize,
             topCoordinate - halfOffset,
             cornerPaint
         )
@@ -103,13 +105,13 @@ class ScannerOverlay @JvmOverloads constructor(
             leftCoordinate - halfOffset,
             topCoordinate - offset,
             leftCoordinate - halfOffset,
-            topCoordinate - offset + size,
+            topCoordinate - offset + cornerSize,
             cornerPaint
         )
         canvas.drawLine(
             rightCoordinate + offset,
             topCoordinate - halfOffset,
-            rightCoordinate + offset - size,
+            rightCoordinate + offset - cornerSize,
             topCoordinate - halfOffset,
             cornerPaint
         )
@@ -117,27 +119,27 @@ class ScannerOverlay @JvmOverloads constructor(
             rightCoordinate + halfOffset,
             topCoordinate - offset,
             rightCoordinate + halfOffset,
-            topCoordinate - offset + size,
+            topCoordinate - offset + cornerSize,
             cornerPaint
         )
         canvas.drawLine(
             rightCoordinate + halfOffset,
             bottomCoordinate + offset,
             rightCoordinate + halfOffset,
-            bottomCoordinate + offset - size,
+            bottomCoordinate + offset - cornerSize,
             cornerPaint
         )
         canvas.drawLine(
             rightCoordinate + offset,
             bottomCoordinate + halfOffset,
-            rightCoordinate + offset - size,
+            rightCoordinate + offset - cornerSize,
             bottomCoordinate + halfOffset,
             cornerPaint
         )
         canvas.drawLine(
             leftCoordinate - offset,
             bottomCoordinate + halfOffset,
-            leftCoordinate - offset + size,
+            leftCoordinate - offset + cornerSize,
             bottomCoordinate + halfOffset,
             cornerPaint
         )
@@ -145,7 +147,7 @@ class ScannerOverlay @JvmOverloads constructor(
             leftCoordinate - halfOffset,
             bottomCoordinate + offset,
             leftCoordinate - halfOffset,
-            bottomCoordinate + offset - size,
+            bottomCoordinate + offset - cornerSize,
             cornerPaint
         )
     }
