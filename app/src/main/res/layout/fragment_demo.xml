@@ -29,7 +29,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:squareHeight="136"
+        app:squareHeight="200"
         app:squareTopMargin="230"
         app:squareWidth="312"/>
 
