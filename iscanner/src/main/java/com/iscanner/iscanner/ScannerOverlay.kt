@@ -3,7 +3,9 @@ package com.iscanner.iscanner
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
+import android.util.DisplayMetrics
 import android.view.View
+import android.view.WindowManager
 
 class ScannerOverlay @JvmOverloads constructor(
     context: Context,
@@ -68,18 +70,11 @@ class ScannerOverlay @JvmOverloads constructor(
         typedArray.recycle()
     }
 
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        super.onSizeChanged(w, h, oldw, oldh)
-        leftCoordinate = (w - rectWidth.dpToPx()) / 2f
-        topCoordinate = topMargin.dpToPx().toFloat()
-        rightCoordinate = leftCoordinate + rectWidth.dpToPx()
-        bottomCoordinate = topCoordinate + rectHeight.dpToPx()
-    }
-
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        // draw transparent rect
+        calculateRectCoordinates()
+
         transparentRect.set(
             leftCoordinate,
             topCoordinate,
@@ -87,7 +82,6 @@ class ScannerOverlay @JvmOverloads constructor(
             rectHeight.dpToPx() + topCoordinate)
         canvas.drawRect(transparentRect, eraser)
 
-        // draw corners
         drawCorners(canvas)
     }
 
@@ -150,5 +144,15 @@ class ScannerOverlay @JvmOverloads constructor(
             bottomCoordinate + offset - cornerSize,
             cornerPaint
         )
+    }
+
+    private fun calculateRectCoordinates() {
+        val metrics = DisplayMetrics()
+        (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.getMetrics(metrics)
+
+        leftCoordinate = (metrics.widthPixels - rectWidth.dpToPx()) / 2f
+        topCoordinate = topMargin.dpToPx().toFloat()
+        rightCoordinate = leftCoordinate + rectWidth.dpToPx()
+        bottomCoordinate = topCoordinate + rectHeight.dpToPx()
     }
 }
