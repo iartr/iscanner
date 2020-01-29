@@ -5,7 +5,6 @@ An android library for scanning QR codes and barcodes with simple implementation
 Demo:   
 ![screen](https://i.ibb.co/qYSFFRt/screen.png)  
 ![gif](https://media.giphy.com/media/lSbY5PDIvvBHNLfzg7/giphy.gif)  
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/_9VXsXBoKn4/0.jpg)](https://www.youtube.com/watch?v=_9VXsXBoKn4 )  
   
 ## Implementation with gradle
   
@@ -20,7 +19,11 @@ Demo:
 2. Then override onScanned callback:  
 Kotlin:  
 Java:  
-  
+
+3. Additional functions:  
+• barcodes.hasBarcodeType(Barcode.YOUR_TYPE) // List<Barcode> barcodes
+• barcode.isQr(), barcode.isEan13() and others
+
 ## Don't forget
 1. Add permission to manifest:  
 <<>>  
@@ -29,3 +32,18 @@ Java:
 Pay attention: min api version is 21 (Android 5.0)  
 
 ## Roadmap
+• Add extension functions for each barcode type  
+• Add unit and instrumental tests  
+• Add java docs  
+• Add change facing feature  
+• Redraw views if field was changed  
+• Focused camera by tap  
+• Take screenshots  
+• Add zooming for camera  
+• Reduce Android API  
+• For java make override callback more beautiful  
+• Realize Camera2 API  
+
+## How to contribute
+
+## Find bug, have question or advice?
