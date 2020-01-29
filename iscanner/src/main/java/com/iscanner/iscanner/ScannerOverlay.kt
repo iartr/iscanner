@@ -1,9 +1,11 @@
 package com.iscanner.iscanner
 
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.*
 import android.util.AttributeSet
 import android.util.DisplayMetrics
+import android.util.TypedValue
 import android.view.View
 import android.view.WindowManager
 
@@ -154,5 +156,13 @@ class ScannerOverlay @JvmOverloads constructor(
         topCoordinate = topMargin.dpToPx().toFloat()
         rightCoordinate = leftCoordinate + rectWidth.dpToPx()
         bottomCoordinate = topCoordinate + rectHeight.dpToPx()
+    }
+
+    private fun Int.dpToPx(): Int {
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            this.toFloat(),
+            Resources.getSystem().displayMetrics
+        ).toInt()
     }
 }

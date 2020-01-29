@@ -3,8 +3,10 @@ package com.iscanner.iscanner
 import android.content.Context
 import android.os.Handler
 import android.util.AttributeSet
+import android.util.SparseArray
 import android.view.SurfaceHolder
 import android.view.SurfaceView
+import androidx.core.util.forEach
 import androidx.core.util.isEmpty
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
@@ -113,5 +115,11 @@ class ScannableCamera @JvmOverloads constructor(
 
     fun onScanned(onScanned: ((List<Barcode>) -> Unit)) {
         this.onScannedCallback = onScanned
+    }
+
+    private fun <T> SparseArray<T>.toList(): List<T> {
+        return ArrayList<T>().apply {
+            this@toList.forEach { _, value -> add(value) }
+        }
     }
 }
