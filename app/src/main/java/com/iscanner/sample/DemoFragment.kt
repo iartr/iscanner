@@ -23,8 +23,6 @@ class DemoFragment : Fragment(R.layout.fragment_demo) {
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         (activity as AppCompatActivity).supportActionBar?.title = ""
 
-        scannerOverlay.cornerColor = Color.GREEN
-
         scannableCamera.onScanned { barcodes ->
             if (barcodes.hasBarcodeType(Barcode.QR_CODE)) {
                 barcodes.forEach { barcode -> // Toast all QRs
@@ -35,10 +33,6 @@ class DemoFragment : Fragment(R.layout.fragment_demo) {
                     }
                 }
             }
-
-            /*activity?.changeFragment(ResultFragment().apply {
-                arguments = bundleOf(RESULT_ARGUMENT to barcodes[0].displayValue)
-            })*/
         }
 
         switchOverlay.setOnCheckedChangeListener { buttonView, isChecked ->

@@ -27,7 +27,8 @@
         android:layout_marginTop="120dp"
         android:background="@drawable/rounded_button"
         android:fontFamily="@font/roboto"
-        android:text="@string/demonstrate_button_text"
-        android:textAllCaps="false" />
+        android:text="Go to demo"
+        android:textAllCaps="false"
+        tools:ignore="HardcodedText" />
 
 </LinearLayout>
