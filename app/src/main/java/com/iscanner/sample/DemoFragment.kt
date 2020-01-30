@@ -1,6 +1,5 @@
 package com.iscanner.sample
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -13,10 +12,6 @@ import com.iscanner.iscanner.isQr
 import kotlinx.android.synthetic.main.fragment_demo.*
 
 class DemoFragment : Fragment(R.layout.fragment_demo) {
-    companion object {
-        private const val RESULT_ARGUMENT = "result"
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).setSupportActionBar(toolbar)
@@ -35,15 +30,15 @@ class DemoFragment : Fragment(R.layout.fragment_demo) {
             }
         }
 
-        switchOverlay.setOnCheckedChangeListener { buttonView, isChecked ->
+        switchOverlay.setOnCheckedChangeListener { _, isChecked ->
             scannerOverlay.isVisible = isChecked
         }
 
-        switchScanning.setOnCheckedChangeListener { buttonView, isChecked ->
+        switchScanning.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) scannableCamera.resumeScanning() else scannableCamera.stopScanning()
         }
 
-        switchMode.setOnCheckedChangeListener { buttonView, isChecked ->
+        switchMode.setOnCheckedChangeListener { _, isChecked ->
             scannableCamera.isActiveDelay = isChecked
         }
     }
