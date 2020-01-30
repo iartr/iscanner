@@ -42,6 +42,7 @@ Pay attention: min api version is 21 (Android 5.0)
 • Add zooming for camera  
 • Reduce Android API  
 • For java make override callback more beautiful  
+• Create QR/bar codes
 • Realize Camera2 API  
 
 ## How to contribute
