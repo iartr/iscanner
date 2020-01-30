@@ -12,7 +12,7 @@ Screen from demo application:
 
 ## Quick start
 1. First of all, add to your layout **ScannableCamera**  
-`<com.iscanner.iscanner.ScannableCamera  
+`<tech.iscanner.iscanner.ScannableCamera  
         android:id="@+id/scannableCamera"  
         android:layout_width="match_parent"  
         android:layout_height="match_parent"  
@@ -20,7 +20,7 @@ Screen from demo application:
         app:isActiveDelay="true" />`
   
 2. If you need overlay, you can add **ScannerOverlay**  
-`<com.iscanner.iscanner.ScannerOverlay
+`<tech.iscanner.iscanner.ScannerOverlay
         android:id="@+id/scannerOverlay"
         android:layout_width="0dp"
         android:layout_height="0dp"
