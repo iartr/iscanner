@@ -8,7 +8,7 @@ Screen from demo application:
 <img alt="demo screen" src="https://i.ibb.co/qYSFFRt/screen.png" width="360" height="640">  
   
 ## Implementation with gradle
-`implementation 'com.iscanner.iscanner:1.0'`
+`implementation 'tech.iscanner.iscanner:1.0'`
 
 ## Quick start
 1. First of all, add to your layout **ScannableCamera**  

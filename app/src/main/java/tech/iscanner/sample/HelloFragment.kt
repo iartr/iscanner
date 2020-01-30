@@ -1,4 +1,4 @@
-package io.github.sample
+package tech.iscanner.sample
 
 import android.Manifest
 import android.content.pm.PackageManager

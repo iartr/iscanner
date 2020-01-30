@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".DemoFragment">
 
-    <io.github.iscanner.ScannableCamera
+    <tech.iscanner.iscanner.ScannableCamera
         android:id="@+id/scannableCamera"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <io.github.iscanner.ScannerOverlay
+    <tech.iscanner.iscanner.ScannerOverlay
         android:id="@+id/scannerOverlay"
         android:layout_width="0dp"
         android:layout_height="0dp"

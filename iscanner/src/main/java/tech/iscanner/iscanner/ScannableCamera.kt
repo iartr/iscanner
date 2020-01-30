@@ -1,4 +1,4 @@
-package io.github.iscanner
+package tech.iscanner.iscanner
 
 import android.content.Context
 import android.os.Handler
