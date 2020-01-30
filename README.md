@@ -1,35 +1,61 @@
 # iscanner
 //<!builds>  
   
-An android library for scanning QR codes and barcodes with simple implementation  
-Demo:   
-![screen](https://i.ibb.co/qYSFFRt/screen.png)  
-![gif](https://media.giphy.com/media/lSbY5PDIvvBHNLfzg7/giphy.gif)  
+An android library for scanning QR codes and barcodes with simple implementation 
+   
+Screen from demo application:   
+  
+<img alt="demo screen" src="https://i.ibb.co/qYSFFRt/screen.png" width="360" height="640">  
   
 ## Implementation with gradle
-  
-  
-## Quick start
-1. First of all, add to your layout ScannableCamera  
-<<>>  
-  
-1.1 If you need overlay, you can add ScannerOverlay  
-<<>>  
-  
-2. Then override onScanned callback:  
-Kotlin:  
-Java:  
+`implementation 'com.iscanner.iscanner:1.0'`
 
-3. Additional functions:  
-• barcodes.hasBarcodeType(Barcode.YOUR_TYPE) // List<Barcode> barcodes
-• barcode.isQr(), barcode.isEan13() and others
+## Quick start
+1. First of all, add to your layout **ScannableCamera**  
+`<com.iscanner.iscanner.ScannableCamera  
+        android:id="@+id/scannableCamera"  
+        android:layout_width="match_parent"  
+        android:layout_height="match_parent"  
+        app:delayMillis="2000"  
+        app:isActiveDelay="true" />`
+  
+2. If you need overlay, you can add **ScannerOverlay**  
+`<com.iscanner.iscanner.ScannerOverlay
+        android:id="@+id/scannerOverlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/gray"
+        app:cornersSize="25"
+        app:cornersWidth="4"
+        app:cornersColor="@android:color/white"
+        app:squareHeight="200"
+        app:squareWidth="312"
+        app:squareTopMargin="230" /> `
+  
+3. Then override **onScanned callback**:  
+**Kotlin**:  
+`scannableCamera.onScanned { barcodes: List<Barcode> ->  
+    changeFragment(ResultFragment())  
+}`  
+      
+**Java** (this callback will be changed by more friendly, see **Roadmap**):  
+`scannableCamera.onScanned(new Function1<List<? extends Barcode>, Unit>() {
+    @Override
+    public Unit invoke(List<? extends Barcode> barcodes) {
+        changeFragment(new ResultFragment());
+        return null;
+    }
+});  `
+
+4. **Additional functions**:  
+• `boolean barcodes.hasBarcodeType(Barcode.YOUR_TYPE)`  
+• `barcode.isQr()`, `barcode.isEan13()`, `barcode.isVkQr()` and others  
 
 ## Don't forget
-1. Add permission to manifest:  
-<<>>  
-2. Before open fragment/activity with ScannableCamera, you must handle permission  
-<<>>  
-Pay attention: min api version is 21 (Android 5.0)  
+1. Add permission to **manifest**:  
+`<uses-permission android:name="android.permission.CAMERA" />`
+2. Before open fragment/activity with ScannableCamera, you must [handle](https://developer.android.com/training/permissions/requesting) permission    
+> Pay attention: min api version is 21 (Android 5.0)  
 
 ## Roadmap
 • Add extension functions for each barcode type  
@@ -42,7 +68,7 @@ Pay attention: min api version is 21 (Android 5.0)
 • Add zooming for camera  
 • Reduce Android API  
 • For java make override callback more beautiful  
-• Create QR/bar codes
+• Create QR/bar codes  
 • Realize Camera2 API  
 
 ## How to contribute
