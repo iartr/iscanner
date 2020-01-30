@@ -1,4 +1,4 @@
-package com.iscanner.sample
+package io.github.sample
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

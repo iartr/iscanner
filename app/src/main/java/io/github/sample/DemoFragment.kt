@@ -1,4 +1,4 @@
-package com.iscanner.sample
+package io.github.sample
 
 import android.os.Bundle
 import android.view.View
@@ -7,8 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.google.android.gms.vision.barcode.Barcode
-import com.iscanner.iscanner.hasBarcodeType
-import com.iscanner.iscanner.isQr
+import io.github.iscanner.hasBarcodeType
+import io.github.iscanner.isQr
 import kotlinx.android.synthetic.main.fragment_demo.*
 
 class DemoFragment : Fragment(R.layout.fragment_demo) {

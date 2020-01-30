@@ -1,4 +1,4 @@
-package com.iscanner.sample
+package io.github.sample
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity

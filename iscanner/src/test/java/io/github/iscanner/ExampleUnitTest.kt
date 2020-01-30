@@ -1,4 +1,4 @@
-package com.iscanner.iscanner
+package io.github.iscanner
 
 import org.junit.Test
 

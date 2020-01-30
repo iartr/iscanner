@@ -1,4 +1,4 @@
-package com.iscanner.iscanner
+package io.github.iscanner
 
 import com.google.android.gms.vision.barcode.Barcode
 
