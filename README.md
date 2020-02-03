@@ -27,9 +27,9 @@ Screen from demo applications:
 ```
 <tech.iscanner.iscanner.ScannerOverlay
         android:id="@+id/scannerOverlay"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/gray"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent_gray"
         app:cornersSize="25"
         app:cornersWidth="4"
         app:cornersColor="@android:color/white"
