@@ -1,2 +1,22 @@
 language: android
 dist: trusty
+os: linux
+
+android:
+  components:
+    - tools
+    - platform-tools
+    - build-tools-26.0.3
+    - android-26
+    - extra-google-m2repository
+    - extra-android-m2repository
+    - extra-android-support
+    - sys-img-x86-google_apis-26
+
+before_script:
+  - chmod +x gradlew
+  #- android-wait-for-emulator
+  #- emulator -avd test -no-skin -no-audio -no-window &
+
+#script:
+#  ./gradlew runUnitTests
