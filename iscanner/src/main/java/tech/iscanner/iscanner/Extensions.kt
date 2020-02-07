@@ -111,7 +111,7 @@ fun Barcode.isDriverLicence(): Boolean {
     return this.valueFormat == Barcode.DRIVER_LICENSE
 }
 
-fun Barcode.isText(): Boolean {
+fun Barcode.isTextCode(): Boolean {
     return this.valueFormat == Barcode.TEXT
 }
 
