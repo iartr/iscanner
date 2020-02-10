@@ -23,7 +23,7 @@ class ScannableCamera @JvmOverloads constructor(
     defStyleArr: Int = 0
 ) : SurfaceView(context, attrs, defStyleArr) {
 
-    private lateinit var onScannedCallback: ((List<Barcode>) -> Unit)
+    private lateinit var onScannedCallback: OnScanned
 
     private var delayHandler: Handler?
     private var delayCallback: (() -> Unit)
@@ -75,7 +75,7 @@ class ScannableCamera @JvmOverloads constructor(
                 }
 
                 if (::onScannedCallback.isInitialized) {
-                    onScannedCallback(detections.toList())
+                    onScannedCallback.onScanned(detections.toList())
                 }
             }
         })
@@ -113,8 +113,12 @@ class ScannableCamera @JvmOverloads constructor(
         delayHandler = Handler()
     }
 
-    fun onScanned(onScanned: ((List<Barcode>) -> Unit)) {
-        this.onScannedCallback = onScanned
+    interface OnScanned {
+        fun onScanned(barcodes: List<Barcode>)
+    }
+
+    fun onScanned(onScannedCallback: OnScanned) {
+        this.onScannedCallback = onScannedCallback
     }
 
     private fun <T> SparseArray<T>.toList(): List<T> {

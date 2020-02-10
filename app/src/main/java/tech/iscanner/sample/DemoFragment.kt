@@ -10,6 +10,7 @@ import com.google.android.gms.vision.barcode.Barcode
 import tech.iscanner.iscanner.hasBarcodeType
 import tech.iscanner.iscanner.isQr
 import kotlinx.android.synthetic.main.fragment_demo.*
+import tech.iscanner.iscanner.ScannableCamera
 
 class DemoFragment : Fragment(R.layout.fragment_demo) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -18,17 +19,19 @@ class DemoFragment : Fragment(R.layout.fragment_demo) {
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         (activity as AppCompatActivity).supportActionBar?.title = ""
 
-        scannableCamera.onScanned { barcodes ->
-            if (barcodes.hasBarcodeType(Barcode.QR_CODE)) {
-                barcodes.forEach { barcode -> // Toast all QRs
-                    if (barcode.isQr()) {
-                        activity?.runOnUiThread {
-                            Toast.makeText(requireContext(), barcode.displayValue, Toast.LENGTH_SHORT).show()
+        scannableCamera.onScanned(object : ScannableCamera.OnScanned {
+            override fun onScanned(barcodes: List<Barcode>) {
+                if (barcodes.hasBarcodeType(Barcode.QR_CODE)) {
+                    barcodes.forEach { barcode -> // Toast all QRs
+                        if (barcode.isQr()) {
+                            activity?.runOnUiThread {
+                                Toast.makeText(requireContext(), barcode.displayValue, Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
                 }
             }
-        }
+        })
 
         switchOverlay.setOnCheckedChangeListener { _, isChecked ->
             scannerOverlay.isVisible = isChecked
