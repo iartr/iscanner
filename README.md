@@ -1,7 +1,6 @@
 # iscanner
-//<!builds>  
-  
-An android library for scanning QR codes and barcodes with simple implementation 
+An android library for scanning QR codes and barcodes with simple implementation without confusing callbacks.  
+Under the hood I use Google Mobile Vision API
    
 Screen from demo applications:   
   
@@ -10,7 +9,7 @@ Screen from demo applications:
 <img alt="demo screen" src="https://sun9-54.userapi.com/c205824/v205824023/536b8/wD1ylaIKuDU.jpg" width="400" height="680"> 
  
 ## Implementation with gradle
-`implementation 'tech.iscanner:iscanner:1.0'`
+`implementation 'tech.iscanner:iscanner:1.1'`
 
 ## Quick start
 1. First of all, add to your layout **ScannableCamera**  
@@ -41,24 +40,25 @@ Screen from demo applications:
 3. Then override **onScanned callback**:  
 **Kotlin**:  
 ```
-scannableCamera.onScanned { barcodes: List<Barcode> ->  
-    changeFragment(ResultFragment())  
-}
+scannableCamera.onScanned(object : ScannableCamera.OnScanned {
+    override fun onScanned(barcodes: List<Barcode>) {
+        changeFragment(ResultFragment()) 
+    }
+})
 ```  
       
-**Java** (this callback will be changed by more friendly, see **Roadmap**):  
+**Java**:
 ```
-scannableCamera.onScanned(new Function1<List<? extends Barcode>, Unit>() {
+scannableCamera.onScanned(new ScannableCamera.OnScanned() {
     @Override
-    public Unit invoke(List<? extends Barcode> barcodes) {
-        changeFragment(new ResultFragment());
-        return null;
+    public void onScanned(@NotNull List<? extends Barcode> barcodes) {
+         changeFragment(ResultFragment())       
     }
 });
 ```
 
 4. **Additional functions**:  
-• `boolean barcodes.hasBarcodeType(Barcode.YOUR_TYPE)`  
+• `boolean barcodesList.hasBarcodeType(Barcode.YOUR_TYPE)`  
 • Check barcode type: `barcode.isQr()`, `barcode.isEan13()`, `barcode.isVkQr()` and others  
 • Check barcode value format: `barcode.isText()`, `barcode.isWifi()`, `barcode.isGeo()`, `barcode.isCalendarEvent()`, `barcode.isDriverLicence()`, `barcode.isUrl()`, `barcode.isContactInfo()`, `barcode.isEmail()`, `barcode.isPhone()`, `barcode.isIsbn()`, `barcode.isProduct()`, `barcode.isSms()`  
 
@@ -69,19 +69,25 @@ scannableCamera.onScanned(new Function1<List<? extends Barcode>, Unit>() {
 > Pay attention: min api version is 21 (Android 5.0)  
 
 ## Roadmap
-• **Add unit and instrumental tests**  
-• **Add java docs**  
-• **Add wiki: changelog, documentation**  
-• **Redraw views if field was changed**  
-• **For java make override callback more beautiful**  
-• Add change facing feature  
+• **Add instrumental tests**  
+• **Add java docs and documentation**  
+• **Change facing feature**
 • Focused camera by tap  
 • Take screenshots  
 • Add zooming for camera  
 • Reduce Android API  
 • Create QR/bar codes  
-• Realize Camera2 API  
+• Add beep sound feature  
+• Realize Camera2 API / CameraX
 
 ## How to contribute
+Just fork this project and send pull request
 
 ## Find bug, have question or advice?
+Use [issue section](https://github.com/32xlevel/iscanner/issues). I will answer you quickly as possible
+
+## Changelog
+See Changelog.md
+
+## LICENSE
+The Apache Software License, Version 2.0
