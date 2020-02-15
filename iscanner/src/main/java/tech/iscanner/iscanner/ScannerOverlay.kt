@@ -28,12 +28,38 @@ class ScannerOverlay @JvmOverloads constructor(
      * Changeable view fields
      * Measure unit: dp
      */
-    var topMargin: Int
-    var cornerSize: Int
-    var cornerWidth: Int
-    var cornerColor: Int
-    var rectWidth: Int
-    var rectHeight: Int
+    var topMargin: Int = 0
+        set(value) {
+            field = value
+            invalidate()
+        }
+    var cornerSize: Int = 0
+        set(value) {
+            field = value
+            invalidate()
+        }
+    var cornerWidth: Int = 2
+        set(value) {
+            field = value
+            cornerPaint.strokeWidth = cornerWidth.dpToPx().toFloat()
+            invalidate()
+        }
+    var cornerColor: Int = Color.WHITE
+        set(value) {
+            field = value
+            cornerPaint.color = cornerColor
+            invalidate()
+        }
+    var rectWidth: Int = 230
+        set(value) {
+            field = value
+            invalidate()
+        }
+    var rectHeight: Int = 230
+        set(value) {
+            field = value
+            invalidate()
+        }
 
     init {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.ScannerOverlay)
