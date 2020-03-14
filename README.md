@@ -66,7 +66,28 @@ scannableCamera.onScanned(new ScannableCamera.OnScanned() {
 1. Add permission to **manifest**:  
 `<uses-permission android:name="android.permission.CAMERA" />`
 2. Before open fragment/activity with ScannableCamera, you must [handle](https://developer.android.com/training/permissions/requesting) permission    
-> Pay attention: min api version is 21 (Android 5.0)  
+> Pay attention: min api version is 21 (Android 5.0)
+
+## Permission handling
+Since 1.2 version you can easily handle permission. See sample:
+```
+// In your fragment / activity with camera:
+if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {  
+    requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_REQUEST)
+} else {
+    // It is handling in library. Do not nothing with camera source
+}
+
+override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    if (requestCode == CAMERA_REQUEST) {
+        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            scannableCamera.cameraSource.start(scannableCamera.holder)
+        } else {
+            requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_REQUEST)
+        }
+    }
+}
+```
 
 ## Roadmap
 • **Add instrumental tests**  

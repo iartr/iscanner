@@ -1,12 +1,15 @@
 package tech.iscanner.iscanner
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.hardware.Camera
 import android.os.Handler
 import android.util.AttributeSet
 import android.util.SparseArray
 import android.view.SurfaceHolder
 import android.view.SurfaceView
+import androidx.core.content.ContextCompat
 import androidx.core.util.forEach
 import androidx.core.util.isEmpty
 import com.google.android.gms.vision.Detector
@@ -32,8 +35,8 @@ class ScannableCamera @JvmOverloads constructor(
     var isActiveDelay: Boolean
 
     private var detector: BarcodeDetector
-    private var cameraSource: CameraSource
     private var surfaceHolderCallback: SurfaceHolderCallback
+    var cameraSource: CameraSource
 
     var isActiveScanner: Boolean
 
@@ -52,7 +55,7 @@ class ScannableCamera @JvmOverloads constructor(
         cameraSource = CameraSource.Builder(context, detector)
             .setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)
             .build()
-        surfaceHolderCallback = SurfaceHolderCallback(cameraSource)
+        surfaceHolderCallback = SurfaceHolderCallback(cameraSource, context)
         holder.addCallback(surfaceHolderCallback)
 
         isActiveScanner = true
@@ -90,20 +93,6 @@ class ScannableCamera @JvmOverloads constructor(
         super.onDetachedFromWindow()
     }
 
-    private class SurfaceHolderCallback(private val source: CameraSource) : SurfaceHolder.Callback {
-        override fun surfaceCreated(holder: SurfaceHolder?) {
-            source.start(holder)
-        }
-
-        override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {
-
-        }
-
-        override fun surfaceDestroyed(holder: SurfaceHolder?) {
-            source.stop()
-        }
-    }
-
     fun stopScanning() {
         isActiveScanner = false
         delayHandler = null
@@ -120,6 +109,22 @@ class ScannableCamera @JvmOverloads constructor(
 
     fun onScanned(onScannedCallback: OnScanned) {
         this.onScannedCallback = onScannedCallback
+    }
+
+    private class SurfaceHolderCallback(private val source: CameraSource, private val context: Context) : SurfaceHolder.Callback {
+        override fun surfaceCreated(holder: SurfaceHolder?) {
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                source.start(holder)
+            }
+        }
+
+        override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {
+
+        }
+
+        override fun surfaceDestroyed(holder: SurfaceHolder?) {
+            source.stop()
+        }
     }
 
     private fun <T> SparseArray<T>.toList(): List<T> {
