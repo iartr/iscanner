@@ -1,6 +1,7 @@
 package tech.iscanner.iscanner
 
 import android.content.Context
+import android.hardware.Camera
 import android.os.Handler
 import android.util.AttributeSet
 import android.util.SparseArray
@@ -8,7 +9,6 @@ import android.view.SurfaceHolder
 import android.view.SurfaceView
 import androidx.core.util.forEach
 import androidx.core.util.isEmpty
-import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
@@ -17,6 +17,7 @@ import com.google.android.gms.vision.barcode.BarcodeDetector
  * Main view for scanning QR codes and barcodes
  * Just override it and onScanned callback
  */
+@Suppress("DEPRECATION")
 class ScannableCamera @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -49,7 +50,7 @@ class ScannableCamera @JvmOverloads constructor(
             .setBarcodeFormats(Barcode.ALL_FORMATS)
             .build()
         cameraSource = CameraSource.Builder(context, detector)
-            .setAutoFocusEnabled(true)
+            .setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)
             .build()
         surfaceHolderCallback = SurfaceHolderCallback(cameraSource)
         holder.addCallback(surfaceHolderCallback)
