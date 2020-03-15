@@ -14,6 +14,7 @@ import tech.iscanner.iscanner.hasBarcodeType
 import tech.iscanner.iscanner.isQr
 import kotlinx.android.synthetic.main.fragment_demo.*
 import tech.iscanner.iscanner.ScannableCamera
+import tech.iscanner.iscanner.exceptions.FlashException
 
 class DemoFragment : Fragment(R.layout.fragment_demo) {
     private companion object {
@@ -62,8 +63,13 @@ class DemoFragment : Fragment(R.layout.fragment_demo) {
         }
 
         flashButton.setOnClickListener {
-            isFlash = !isFlash
-            scannableCamera.flash(isFlash)
+            try {
+                isFlash = !isFlash
+                scannableCamera.flash(isFlash)
+            } catch (e: FlashException) {
+                isFlash = !isFlash
+                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+            }
         }
 
         facingButton.setOnClickListener {
