@@ -15,6 +15,7 @@ import androidx.core.util.isEmpty
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
+import tech.iscanner.iscanner.exceptions.FlashException
 
 /**
  * Main view for scanning QR codes and barcodes
@@ -109,6 +110,38 @@ class ScannableCamera @JvmOverloads constructor(
 
     fun onScanned(onScannedCallback: OnScanned) {
         this.onScannedCallback = onScannedCallback
+    }
+
+    /**
+     * De(activate) flash on device by isFlash param
+     * If flash is not supported, throws FlashException
+     */
+    @Throws(FlashException::class)
+    fun flash(isFlash: Boolean) {
+        val camera = getCamera(cameraSource)
+        camera?.let {
+            try {
+                val params = it.parameters
+                params.flashMode = if (isFlash) Camera.Parameters.FLASH_MODE_TORCH else Camera.Parameters.FLASH_MODE_OFF
+                camera.parameters = params
+            } catch (e: Exception) {
+                throw FlashException("Flash is not supported")
+            }
+        }
+    }
+
+    /**
+     * Get Camera for set various parameters and manipulate it
+     */
+    private fun getCamera(cameraSource: CameraSource): Camera? {
+        val declaredFields = CameraSource::class.java.declaredFields
+        for (field in declaredFields) {
+            if (field.type == Camera::class.java) {
+                field.isAccessible = true
+                return field.get(cameraSource) as? Camera
+            }
+        }
+        return null
     }
 
     private class SurfaceHolderCallback(private val source: CameraSource, private val context: Context) : SurfaceHolder.Callback {

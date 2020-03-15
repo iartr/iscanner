@@ -1,6 +1,10 @@
 # Changelog
+## 1.2:
++ Added flash on/off method to ScannableCamera
++ Organized more easily handling permission
+
 ## 1.1
-+ Update callback override
-+ Add unit tests
++ Updated callback override
++ Added unit tests
 + Redraw overlay when any field changed
-+ Add Apache License
++ Added Apache License

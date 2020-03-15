@@ -20,6 +20,8 @@ class DemoFragment : Fragment(R.layout.fragment_demo) {
         private const val CAMERA_REQUEST = 1024
     }
 
+    private var isFlash = false
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
@@ -56,6 +58,11 @@ class DemoFragment : Fragment(R.layout.fragment_demo) {
 
         switchMode.setOnCheckedChangeListener { _, isChecked ->
             scannableCamera.isActiveDelay = isChecked
+        }
+
+        flashButton.setOnClickListener {
+            isFlash = !isFlash
+            scannableCamera.flash(isFlash)
         }
     }
 
