@@ -37,7 +37,7 @@ class ScannableCamera @JvmOverloads constructor(
 
     private var detector: BarcodeDetector
     private var surfaceHolderCallback: SurfaceHolderCallback
-    var cameraSource: CameraSource
+    private var cameraSource: CameraSource
 
     var isActiveScanner: Boolean
 
@@ -87,6 +87,10 @@ class ScannableCamera @JvmOverloads constructor(
         if (::onScannedCallback.isInitialized) {
             onScannedCallback.onScanned(detections.toList())
         }
+    }
+
+    fun startCamera() {
+        cameraSource.start(holder)
     }
 
     fun stopScanning() {

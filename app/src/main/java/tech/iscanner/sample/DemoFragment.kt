@@ -81,7 +81,7 @@ class DemoFragment : Fragment(R.layout.fragment_demo) {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if (requestCode == CAMERA_REQUEST) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                scannableCamera.cameraSource.start(scannableCamera.holder)
+                scannableCamera.startCamera()
             } else {
                 requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_REQUEST)
             }
