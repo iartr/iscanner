@@ -58,6 +58,8 @@ scannableCamera.onScanned(new ScannableCamera.OnScanned() {
 ```
 
 4. **Additional functions**:  
+• Flash on/off: `scannableCamera.flash(isFlash)`. Throws FlashException if flash in not supported.  
+• Change facing: `scannableCamera.changeFacing(isBackFacing)`
 • `boolean barcodesList.hasBarcodeType(Barcode.YOUR_TYPE)`  
 • Check barcode type: `barcode.isQr()`, `barcode.isEan13()`, `barcode.isVkQr()` and others  
 • Check barcode value format: `barcode.isText()`, `barcode.isWifi()`, `barcode.isGeo()`, `barcode.isCalendarEvent()`, `barcode.isDriverLicence()`, `barcode.isUrl()`, `barcode.isContactInfo()`, `barcode.isEmail()`, `barcode.isPhone()`, `barcode.isIsbn()`, `barcode.isProduct()`, `barcode.isSms()`  
@@ -66,12 +68,33 @@ scannableCamera.onScanned(new ScannableCamera.OnScanned() {
 1. Add permission to **manifest**:  
 `<uses-permission android:name="android.permission.CAMERA" />`
 2. Before open fragment/activity with ScannableCamera, you must [handle](https://developer.android.com/training/permissions/requesting) permission    
-> Pay attention: min api version is 21 (Android 5.0)  
+> Pay attention: min api version is 21 (Android 5.0)
+
+## Permission handling
+Since 1.2 version you can easily handle permission. See sample:
+```
+// In your fragment / activity with camera:
+if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {  
+    requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_REQUEST)
+} else {
+    // It is handling in library. Do not nothing with camera source
+}
+
+override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    if (requestCode == CAMERA_REQUEST) {
+        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            scannableCamera.startCamera()
+        } else {
+            requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_REQUEST)
+        }
+    }
+}
+```
 
 ## Roadmap
 • **Add instrumental tests**  
 • **Add java docs and documentation**  
-• **Change facing feature**
+• **Change facing feature**  
 • Focused camera by tap  
 • Take screenshots  
 • Add zooming for camera  

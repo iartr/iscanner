@@ -1,9 +1,12 @@
 package tech.iscanner.sample
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.google.android.gms.vision.barcode.Barcode
@@ -11,13 +14,27 @@ import tech.iscanner.iscanner.hasBarcodeType
 import tech.iscanner.iscanner.isQr
 import kotlinx.android.synthetic.main.fragment_demo.*
 import tech.iscanner.iscanner.ScannableCamera
+import tech.iscanner.iscanner.exceptions.FlashException
 
 class DemoFragment : Fragment(R.layout.fragment_demo) {
+    private companion object {
+        private const val CAMERA_REQUEST = 1024
+    }
+
+    private var isFlash = false
+    private var isBackFacing = true
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as AppCompatActivity).setSupportActionBar(toolbar)
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (activity as AppCompatActivity).supportActionBar?.title = ""
+        (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
+        (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (requireActivity() as AppCompatActivity).supportActionBar?.title = ""
+
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_REQUEST)
+        } else {
+            // IT IS HANDLING IN LIBRARY!
+        }
 
         scannableCamera.onScanned(object : ScannableCamera.OnScanned {
             override fun onScanned(barcodes: List<Barcode>) {
@@ -44,7 +61,30 @@ class DemoFragment : Fragment(R.layout.fragment_demo) {
         switchMode.setOnCheckedChangeListener { _, isChecked ->
             scannableCamera.isActiveDelay = isChecked
         }
+
+        flashButton.setOnClickListener {
+            try {
+                isFlash = !isFlash
+                scannableCamera.flash(isFlash)
+            } catch (e: FlashException) {
+                isFlash = !isFlash
+                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        facingButton.setOnClickListener {
+            isBackFacing = !isBackFacing
+            scannableCamera.changeFacing(isBackFacing)
+        }
     }
 
-
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        if (requestCode == CAMERA_REQUEST) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                scannableCamera.startCamera()
+            } else {
+                requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_REQUEST)
+            }
+        }
+    }
 }

@@ -22,16 +22,16 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#44000000"
+        app:cornersColor="@android:color/white"
         app:cornersSize="25"
         app:cornersWidth="4"
-        app:cornersColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:squareHeight="200"
         app:squareTopMargin="230"
-        app:squareWidth="312"/>
+        app:squareWidth="312" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -52,8 +52,8 @@
         android:checked="true"
         android:fontFamily="@font/roboto"
         android:text="Overlay"
-        android:textStyle="bold"
         android:textColor="@android:color/white"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
@@ -66,8 +66,8 @@
         android:checked="true"
         android:fontFamily="@font/roboto"
         android:text="Scanning"
-        android:textStyle="bold"
         android:textColor="@android:color/background_light"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/switchOverlay" />
 
@@ -80,9 +80,31 @@
         android:checked="true"
         android:fontFamily="@font/roboto"
         android:text="Active delay?"
-        android:textStyle="bold"
         android:textColor="@android:color/background_light"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/switchScanning" />
+
+    <ImageView
+        android:id="@+id/flashButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="112dp"
+        android:layout_marginBottom="72dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_flash_on"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/facingButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="112dp"
+        android:layout_marginBottom="72dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_flip_camera"
+        tools:ignore="ContentDescription" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
