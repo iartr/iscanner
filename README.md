@@ -59,6 +59,7 @@ scannableCamera.onScanned(new ScannableCamera.OnScanned() {
 
 4. **Additional functions**:  
 • Flash on/off: `scannableCamera.flash(isFlash)`. Throws FlashException if flash in not supported.  
+• Change facing: `scannableCamera.changeFacing(isBackFacing)`
 • `boolean barcodesList.hasBarcodeType(Barcode.YOUR_TYPE)`  
 • Check barcode type: `barcode.isQr()`, `barcode.isEan13()`, `barcode.isVkQr()` and others  
 • Check barcode value format: `barcode.isText()`, `barcode.isWifi()`, `barcode.isGeo()`, `barcode.isCalendarEvent()`, `barcode.isDriverLicence()`, `barcode.isUrl()`, `barcode.isContactInfo()`, `barcode.isEmail()`, `barcode.isPhone()`, `barcode.isIsbn()`, `barcode.isProduct()`, `barcode.isSms()`  

@@ -26,7 +26,7 @@ class ScannableCamera @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleArr: Int = 0
-) : SurfaceView(context, attrs, defStyleArr) {
+) : SurfaceView(context, attrs, defStyleArr), Detector.Processor<Barcode> {
 
     private lateinit var onScannedCallback: OnScanned
 
@@ -53,6 +53,7 @@ class ScannableCamera @JvmOverloads constructor(
         detector = BarcodeDetector.Builder(context)
             .setBarcodeFormats(Barcode.ALL_FORMATS)
             .build()
+        detector.setProcessor(this)
         cameraSource = CameraSource.Builder(context, detector)
             .setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)
             .build()
@@ -62,36 +63,30 @@ class ScannableCamera @JvmOverloads constructor(
         isActiveScanner = true
     }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        detector.setProcessor(object : Detector.Processor<Barcode> {
-            override fun release() {
-            }
-
-            override fun receiveDetections(barcodes: Detector.Detections<Barcode>?) {
-                if (!isActiveScanner) return
-
-                val detections = barcodes?.detectedItems ?: return
-                if (detections.isEmpty()) return
-
-                if (isActiveDelay) {
-                    isActiveScanner = false
-                    delayHandler?.postDelayed(delayCallback, delay)
-                }
-
-                if (::onScannedCallback.isInitialized) {
-                    onScannedCallback.onScanned(detections.toList())
-                }
-            }
-        })
-    }
-
     override fun onDetachedFromWindow() {
         holder.removeCallback(surfaceHolderCallback)
         delayHandler = null // for avoid memory leaks
         cameraSource.stop()
         cameraSource.release()
         super.onDetachedFromWindow()
+    }
+
+    override fun release() { }
+
+    override fun receiveDetections(barcodes: Detector.Detections<Barcode>?) {
+        if (!isActiveScanner) return
+
+        val detections = barcodes?.detectedItems ?: return
+        if (detections.isEmpty()) return
+
+        if (isActiveDelay) {
+            isActiveScanner = false
+            delayHandler?.postDelayed(delayCallback, delay)
+        }
+
+        if (::onScannedCallback.isInitialized) {
+            onScannedCallback.onScanned(detections.toList())
+        }
     }
 
     fun stopScanning() {
@@ -110,6 +105,24 @@ class ScannableCamera @JvmOverloads constructor(
 
     fun onScanned(onScannedCallback: OnScanned) {
         this.onScannedCallback = onScannedCallback
+    }
+
+    /**
+     * Change facing by isBackFacing param
+     */
+    fun changeFacing(isBackFacing: Boolean) {
+        cameraSource.release()
+
+        detector.setProcessor(this)
+        cameraSource = CameraSource.Builder(context, detector)
+            .setFacing(if (isBackFacing) 0 else 1)
+            .setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)
+            .build()
+
+        surfaceHolderCallback = SurfaceHolderCallback(cameraSource, context)
+        holder.addCallback(surfaceHolderCallback)
+
+        cameraSource.start(holder)
     }
 
     /**

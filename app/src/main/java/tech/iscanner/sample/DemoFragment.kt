@@ -21,6 +21,7 @@ class DemoFragment : Fragment(R.layout.fragment_demo) {
     }
 
     private var isFlash = false
+    private var isBackFacing = true
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -63,6 +64,11 @@ class DemoFragment : Fragment(R.layout.fragment_demo) {
         flashButton.setOnClickListener {
             isFlash = !isFlash
             scannableCamera.flash(isFlash)
+        }
+
+        facingButton.setOnClickListener {
+            isBackFacing = !isBackFacing
+            scannableCamera.changeFacing(isBackFacing)
         }
     }
 

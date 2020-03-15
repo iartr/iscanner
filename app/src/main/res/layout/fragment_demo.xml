@@ -96,4 +96,15 @@
         app:srcCompat="@drawable/ic_flash_on"
         tools:ignore="ContentDescription" />
 
+    <ImageView
+        android:id="@+id/facingButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="112dp"
+        android:layout_marginBottom="72dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_flip_camera"
+        tools:ignore="ContentDescription" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

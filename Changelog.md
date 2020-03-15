@@ -1,6 +1,7 @@
 # Changelog
 ## 1.2:
 + Added flash on/off method to ScannableCamera
++ Added change facing feature
 + Organized more easily handling permission
 
 ## 1.1
