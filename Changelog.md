@@ -1,4 +1,8 @@
 # Changelog
+## 1.3
++ Optimization in ScannableCamera with android.hardware.Camera
++ Reduce min API version to 16
+
 ## 1.2:
 + Added flash on/off method to ScannableCamera
 + Added change facing feature
