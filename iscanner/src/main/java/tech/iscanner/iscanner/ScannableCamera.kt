@@ -39,6 +39,9 @@ class ScannableCamera @JvmOverloads constructor(
     private var surfaceHolderCallback: SurfaceHolderCallback
     private var cameraSource: CameraSource
 
+    private var originCamera: Camera? = null
+    private var originCameraInitializerHandler: Handler?
+
     var isActiveScanner: Boolean
 
     init {
@@ -61,11 +64,15 @@ class ScannableCamera @JvmOverloads constructor(
         holder.addCallback(surfaceHolderCallback)
 
         isActiveScanner = true
+
+        originCameraInitializerHandler = Handler()
+        originCameraInitializerHandler?.postDelayed({ originCamera = getCamera(cameraSource) }, 2500)
     }
 
     override fun onDetachedFromWindow() {
         holder.removeCallback(surfaceHolderCallback)
         delayHandler = null // for avoid memory leaks
+        originCameraInitializerHandler = null
         cameraSource.stop()
         cameraSource.release()
         super.onDetachedFromWindow()
@@ -135,12 +142,11 @@ class ScannableCamera @JvmOverloads constructor(
      */
     @Throws(FlashException::class)
     fun flash(isFlash: Boolean) {
-        val camera = getCamera(cameraSource)
-        camera?.let {
+        originCamera?.let {
             try {
                 val params = it.parameters
                 params.flashMode = if (isFlash) Camera.Parameters.FLASH_MODE_TORCH else Camera.Parameters.FLASH_MODE_OFF
-                camera.parameters = params
+                it.parameters = params
             } catch (e: Exception) {
                 throw FlashException("Flash is not supported")
             }
