@@ -9,7 +9,7 @@ android {
     buildToolsVersion "29.0.3"
     defaultConfig {
         applicationId "tech.iscanner.sample"
-        minSdkVersion 21
+        minSdkVersion 16
         targetSdkVersion 29
         versionCode 3
         versionName "1.2"
